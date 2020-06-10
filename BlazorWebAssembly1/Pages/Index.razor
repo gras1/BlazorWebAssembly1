@@ -1,0 +1,345 @@
+﻿@page "/"
+
+@using BlazorWebAssembly1.Components
+
+<h1>Noughts and Crosses</h1>
+
+<p>@_winMessage</p>
+
+<table>
+    <tbody>
+        <tr>
+            <td>
+                <span>@noughtsAndCrossesText[0, 0]</span><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton01" ButtonText="Set O" OnClick="@(() => SetNoughtsAndCrossesText(0, 0, 1))" /><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton02" ButtonText="Set X" OnClick="@(() => SetNoughtsAndCrossesText(0, 0, 2))" />
+            </td>
+            <td>
+                <span>@noughtsAndCrossesText[0, 1]</span><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton11" ButtonText="Set O" OnClick="@(() => SetNoughtsAndCrossesText(0, 1, 1))" /><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton12" ButtonText="Set X" OnClick="@(() => SetNoughtsAndCrossesText(0, 1, 2))" />
+            </td>
+            <td>
+                <span>@noughtsAndCrossesText[0, 2]</span><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton21" ButtonText="Set O" OnClick="@(() => SetNoughtsAndCrossesText(0, 2, 1))" /><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton22" ButtonText="Set X" OnClick="@(() => SetNoughtsAndCrossesText(0, 2, 2))" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span>@noughtsAndCrossesText[1, 0]</span><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton31" ButtonText="Set O" OnClick="@(() => SetNoughtsAndCrossesText(1, 0, 1))" /><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton32" ButtonText="Set X" OnClick="@(() => SetNoughtsAndCrossesText(1, 0, 2))" />
+            </td>
+            <td>
+                <span>@noughtsAndCrossesText[1, 1]</span><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton41" ButtonText="Set O" OnClick="@(() => SetNoughtsAndCrossesText(1, 1, 1))" /><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton42" ButtonText="Set X" OnClick="@(() => SetNoughtsAndCrossesText(1, 1, 2))" />
+            </td>
+            <td>
+                <span>@noughtsAndCrossesText[1, 2]</span><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton51" ButtonText="Set O" OnClick="@(() => SetNoughtsAndCrossesText(1, 2, 1))" /><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton52" ButtonText="Set X" OnClick="@(() => SetNoughtsAndCrossesText(1, 2, 2))" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span>@noughtsAndCrossesText[2, 0]</span><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton61" ButtonText="Set O" OnClick="@(() => SetNoughtsAndCrossesText(2, 0, 1))" /><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton62" ButtonText="Set X" OnClick="@(() => SetNoughtsAndCrossesText(2, 0, 2))" />
+            </td>
+            <td>
+                <span>@noughtsAndCrossesText[2, 1]</span><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton71" ButtonText="Set O" OnClick="@(() => SetNoughtsAndCrossesText(2, 1, 1))" /><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton72" ButtonText="Set X" OnClick="@(() => SetNoughtsAndCrossesText(2, 1, 2))" />
+            </td>
+            <td>
+                <span>@noughtsAndCrossesText[2, 2]</span><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton81" ButtonText="Set O" OnClick="@(() => SetNoughtsAndCrossesText(2, 2, 1))" /><br />
+                <NoughtsAndCrossesButton @ref="noughtsAndCrossesButton82" ButtonText="Set X" OnClick="@(() => SetNoughtsAndCrossesText(2, 2, 2))" />
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<button @onclick="@ResetGame">Reset Game</button>
+
+@code {
+    private NoughtsAndCrossesButton noughtsAndCrossesButton01;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton02;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton11;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton12;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton21;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton22;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton31;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton32;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton41;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton42;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton51;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton52;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton61;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton62;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton71;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton72;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton81;
+    private NoughtsAndCrossesButton noughtsAndCrossesButton82;
+
+    int[,] noughtsAndCrossesValues = new int[3, 3];
+    string[,] noughtsAndCrossesText = new string[3, 3];
+
+    string _winMessage;
+
+    private int _numberOfTurns;
+
+    private void ResetGame()
+    {
+        noughtsAndCrossesValues = new int[3, 3];
+        noughtsAndCrossesText = new string[3, 3];
+        ShowOs();
+        ShowXs();
+        _numberOfTurns = 0;
+        _winMessage = "";
+    }
+
+    private void SetNoughtsAndCrossesText(int rowIndex, int columnIndex, int noughtsAndCrossesValue)
+    {
+        noughtsAndCrossesValues[rowIndex, columnIndex] = noughtsAndCrossesValue;
+        if (noughtsAndCrossesValue == 1)
+        {
+            noughtsAndCrossesText[rowIndex, columnIndex] = "O";
+            HideOAndShowXs();
+        }
+        else if (noughtsAndCrossesValue == 2)
+        {
+            noughtsAndCrossesText[rowIndex, columnIndex] = "X";
+            HideXAndShowOs();
+        }
+        HideButtonsThatHaveValues();
+        _numberOfTurns++;
+        if (_numberOfTurns >= 5)
+        {
+            CalculateGameWon(noughtsAndCrossesValue);
+        }
+    }
+
+    private void CalculateGameWon(int noughtsAndCrossesValue)
+    {
+        bool displayWinMessage = false;
+        if (CalculateRowWon(noughtsAndCrossesValue))
+        {
+            displayWinMessage = true;
+        }
+        else if (CalculateColumnWon(noughtsAndCrossesValue))
+        {
+            displayWinMessage = true;
+        }
+        else if (CalculateDiagonalWon(noughtsAndCrossesValue))
+        {
+            displayWinMessage = true;
+        }
+
+        if (displayWinMessage)
+        {
+            _winMessage = string.Format("{0} has won!", noughtsAndCrossesValue == 1 ? "O" : "X");
+            HideOs();
+            HideXs();
+        }
+        else if (_numberOfTurns == 9)
+        {
+            _winMessage = "Game Over - no one wins";
+        }
+    }
+
+    private bool CalculateRowWon(int noughtsAndCrossesValue)
+    {
+        for (int rowIndex = 0; rowIndex < 3; rowIndex++)
+        {
+            int totalRowValue = 0;
+            for (int columnIndex = 0; columnIndex < 3; columnIndex++)
+            {
+                if (noughtsAndCrossesValues[rowIndex, columnIndex] == noughtsAndCrossesValue)
+                {
+                    totalRowValue += noughtsAndCrossesValue;
+                }
+            }
+            if (totalRowValue == (noughtsAndCrossesValue * 3))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool CalculateColumnWon(int noughtsAndCrossesValue)
+    {
+        for (int columnIndex = 0; columnIndex < 3; columnIndex++)
+        {
+            int totalColumnValue = 0;
+            for (int rowIndex = 0; rowIndex < 3; rowIndex++)
+            {
+                if (noughtsAndCrossesValues[rowIndex, columnIndex] == noughtsAndCrossesValue)
+                {
+                    totalColumnValue += noughtsAndCrossesValue;
+                }
+            }
+            if (totalColumnValue == (noughtsAndCrossesValue * 3))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool CalculateDiagonalWon(int noughtsAndCrossesValue)
+    {
+        int totalDiagonalValue1 = 0;
+        int totalDiagonalValue2 = 0;
+        for (int diagonalIndex = 0; diagonalIndex < 3; diagonalIndex++)
+        {
+            if (noughtsAndCrossesValues[diagonalIndex, diagonalIndex] == noughtsAndCrossesValue)
+            {
+                totalDiagonalValue1 += noughtsAndCrossesValue;
+            }
+            if (noughtsAndCrossesValues[diagonalIndex, 2 - diagonalIndex] == noughtsAndCrossesValue)
+            {
+                totalDiagonalValue2 += noughtsAndCrossesValue;
+            }
+        }
+        if (totalDiagonalValue1 == (noughtsAndCrossesValue * 3) || totalDiagonalValue2 == (noughtsAndCrossesValue * 3))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void HideButtonsThatHaveValues()
+    {
+        for (int rowIndex = 0; rowIndex < 3; rowIndex++)
+        {
+            for (int columnIndex = 0; columnIndex < 3; columnIndex++)
+            {
+                if (!string.IsNullOrEmpty(noughtsAndCrossesText[rowIndex, columnIndex]))
+                {
+                    if (rowIndex == 0)
+                    {
+                        if (columnIndex == 0)
+                        {
+                            noughtsAndCrossesButton01.Hide();
+                            noughtsAndCrossesButton02.Hide();
+                        }
+                        else if (columnIndex == 1)
+                        {
+                            noughtsAndCrossesButton11.Hide();
+                            noughtsAndCrossesButton12.Hide();
+                        }
+                        else if (columnIndex == 2)
+                        {
+                            noughtsAndCrossesButton21.Hide();
+                            noughtsAndCrossesButton22.Hide();
+                        }
+                    }
+                    else if (rowIndex == 1)
+                    {
+                        if (columnIndex == 0)
+                        {
+                            noughtsAndCrossesButton31.Hide();
+                            noughtsAndCrossesButton32.Hide();
+                        }
+                        else if (columnIndex == 1)
+                        {
+                            noughtsAndCrossesButton41.Hide();
+                            noughtsAndCrossesButton42.Hide();
+                        }
+                        else if (columnIndex == 2)
+                        {
+                            noughtsAndCrossesButton51.Hide();
+                            noughtsAndCrossesButton52.Hide();
+                        }
+                    }
+                    else if (rowIndex == 2)
+                    {
+                        if (columnIndex == 0)
+                        {
+                            noughtsAndCrossesButton61.Hide();
+                            noughtsAndCrossesButton62.Hide();
+                        }
+                        else if (columnIndex == 1)
+                        {
+                            noughtsAndCrossesButton71.Hide();
+                            noughtsAndCrossesButton72.Hide();
+                        }
+                        else if (columnIndex == 2)
+                        {
+                            noughtsAndCrossesButton81.Hide();
+                            noughtsAndCrossesButton82.Hide();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void ShowOs()
+    {
+        noughtsAndCrossesButton01.Show();
+        noughtsAndCrossesButton11.Show();
+        noughtsAndCrossesButton21.Show();
+        noughtsAndCrossesButton31.Show();
+        noughtsAndCrossesButton41.Show();
+        noughtsAndCrossesButton51.Show();
+        noughtsAndCrossesButton61.Show();
+        noughtsAndCrossesButton71.Show();
+        noughtsAndCrossesButton81.Show();
+    }
+
+    private void ShowXs()
+    {
+        noughtsAndCrossesButton02.Show();
+        noughtsAndCrossesButton12.Show();
+        noughtsAndCrossesButton22.Show();
+        noughtsAndCrossesButton32.Show();
+        noughtsAndCrossesButton42.Show();
+        noughtsAndCrossesButton52.Show();
+        noughtsAndCrossesButton62.Show();
+        noughtsAndCrossesButton72.Show();
+        noughtsAndCrossesButton82.Show();
+    }
+
+    private void HideOs()
+    {
+        noughtsAndCrossesButton01.Hide();
+        noughtsAndCrossesButton11.Hide();
+        noughtsAndCrossesButton21.Hide();
+        noughtsAndCrossesButton31.Hide();
+        noughtsAndCrossesButton41.Hide();
+        noughtsAndCrossesButton51.Hide();
+        noughtsAndCrossesButton61.Hide();
+        noughtsAndCrossesButton71.Hide();
+        noughtsAndCrossesButton81.Hide();
+    }
+
+    private void HideXs()
+    {
+        noughtsAndCrossesButton02.Hide();
+        noughtsAndCrossesButton12.Hide();
+        noughtsAndCrossesButton22.Hide();
+        noughtsAndCrossesButton32.Hide();
+        noughtsAndCrossesButton42.Hide();
+        noughtsAndCrossesButton52.Hide();
+        noughtsAndCrossesButton62.Hide();
+        noughtsAndCrossesButton72.Hide();
+        noughtsAndCrossesButton82.Hide();
+    }
+
+    private void HideOAndShowXs()
+    {
+        HideOs();
+        ShowXs();
+    }
+
+    private void HideXAndShowOs()
+    {
+        HideXs();
+        ShowOs();
+    }
+}

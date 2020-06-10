@@ -1,0 +1,21 @@
+﻿<button onclick="@OnClick" hidden="@_isHidden">@ButtonText</button>
+
+@code {
+    private bool _isHidden;
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    [Parameter]
+    public string ButtonText { get; set; }
+
+    public void Show()
+    {
+        _isHidden = false;
+    }
+
+    public void Hide()
+    {
+        _isHidden = true;
+    }
+}
